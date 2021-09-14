@@ -8,7 +8,7 @@ jobs:
       matrix:
         go: [1.17]
     runs-on: ubuntu-latest
-    container: golang:${{ matrix.go }}
+    container: bdwyertech/go-crosscompile:${{ matrix.go }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
