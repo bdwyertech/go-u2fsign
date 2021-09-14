@@ -1,0 +1,24 @@
+# github.com/bearsh/hid v1.3.0
+## explicit; go 1.14
+github.com/bearsh/hid
+github.com/bearsh/hid/hidapi
+github.com/bearsh/hid/hidapi/hidapi
+github.com/bearsh/hid/hidapi/libusb
+github.com/bearsh/hid/hidapi/linux
+github.com/bearsh/hid/hidapi/mac
+github.com/bearsh/hid/hidapi/windows
+github.com/bearsh/hid/libusb
+github.com/bearsh/hid/libusb/libusb
+github.com/bearsh/hid/libusb/libusb/os
+# github.com/marshallbrekka/go-u2fhost v0.0.0-20210111072507-3ccdec8c8105
+## explicit; go 1.14
+github.com/marshallbrekka/go-u2fhost
+github.com/marshallbrekka/go-u2fhost/bytes
+github.com/marshallbrekka/go-u2fhost/hid
+# github.com/sirupsen/logrus v1.8.1
+## explicit; go 1.13
+github.com/sirupsen/logrus
+# golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
+## explicit; go 1.12
+golang.org/x/sys/unix
+golang.org/x/sys/windows
