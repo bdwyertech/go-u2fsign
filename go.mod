@@ -9,5 +9,5 @@ require (
 
 require (
 	github.com/bearsh/hid v1.3.0 // indirect
-	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+	golang.org/x/sys v0.0.0-20210915083310-ed5796bab164 // indirect
 )

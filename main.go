@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -10,25 +11,41 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func init() {
+	if _, verbose := os.LookupEnv("U2F_VERBOSE"); verbose {
+		log.SetLevel(log.DebugLevel)
+	}
+	if _, trace := os.LookupEnv("U2F_TRACE"); trace {
+		log.SetLevel(log.DebugLevel)
+		log.SetReportCaller(true)
+	}
+}
+
 func main() {
-	var authR *u2f.AuthenticateRequest
+	var authR u2f.AuthenticateRequest
 
 	err := json.NewDecoder(os.Stdin).Decode(&authR)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	response := authenticateHelper(authR, u2f.Devices())
-	responseJson, _ := json.Marshal(response)
+	response, err := u2fAuth(&authR, u2f.Devices())
+	if err != nil {
+		log.Fatal(err)
+	}
+	responseJson, err := json.Marshal(response)
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println(string(responseJson))
 
 }
 
-func authenticateHelper(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) *u2f.AuthenticateResponse {
+func u2fAuth(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) (response *u2f.AuthenticateResponse, err error) {
 	log.Debugf("Authenticating with request %+v", req)
 	openDevices := []u2f.Device{}
 	for i, device := range devices {
-		err := device.Open()
+		err = device.Open()
 		if err == nil {
 			openDevices = append(openDevices, u2f.Device(devices[i]))
 			defer func(i int) {
@@ -52,15 +69,15 @@ func authenticateHelper(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) 
 	for {
 		select {
 		case <-timeout:
-			fmt.Println("Failed to get authentication response after 25 seconds")
-			return nil
+			err = errors.New("failed to get authentication response after 25 seconds")
+			return
 		case <-interval.C:
 			for _, device := range openDevices {
-				response, err := device.Authenticate(req)
+				response, err = device.Authenticate(req)
 				if err == nil {
-					return response
-				} else if _, ok := err.(u2f.TestOfUserPresenceRequiredError); ok && !prompted {
-					fmt.Println("\nTouch the flashing U2F device to authenticate...")
+					return
+				} else if err.Error() == "Device is requesting test of use presence to fulfill the request." && !prompted {
+					log.Infoln("Touch the flashing U2F device to authenticate...")
 					prompted = true
 				} else {
 					log.Debugf("Got status response %s", err)
