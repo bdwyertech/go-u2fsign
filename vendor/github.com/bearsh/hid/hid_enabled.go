@@ -19,7 +19,7 @@ package hid
 #cgo darwin CFLAGS: -DOS_DARWIN
 #cgo darwin LDFLAGS: -framework CoreFoundation -framework IOKit -framework AppKit
 #cgo windows CFLAGS: -DOS_WINDOWS
-#cgo windows LDFLAGS: -lsetupapi
+#cgo windows LDFLAGS: -lsetupapi -lhid
 
 #ifdef OS_LINUX
 	#ifdef HIDRAW
@@ -52,7 +52,6 @@ import "C"
 
 import (
 	"errors"
-	"runtime"
 	"sync"
 	"unsafe"
 )
@@ -157,9 +156,9 @@ func (dev *Device) Close() error {
 //
 // Write will send the data on the first OUT endpoint, if one exists. If it does
 // not, it will send the data through the Control Endpoint (Endpoint 0).
-func (dev *Device) Write(b []byte) (int, error) {
+func (dev *Device) Write(report []byte) (int, error) {
 	// Abort if nothing to write
-	if len(b) == 0 {
+	if len(report) == 0 {
 		return 0, nil
 	}
 	// Abort if device closed in between
@@ -170,13 +169,7 @@ func (dev *Device) Write(b []byte) (int, error) {
 	if device == nil {
 		return 0, ErrDeviceClosed
 	}
-	// Prepend a HID report ID on Windows, other OSes don't need it
-	var report []byte
-	if runtime.GOOS == "windows" {
-		report = append([]byte{0x00}, b...)
-	} else {
-		report = b
-	}
+
 	// Execute the write operation
 	written := int(C.hid_write(device, (*C.uchar)(&report[0]), C.size_t(len(report))))
 	if written == -1 {

@@ -1,4 +1,4 @@
-# github.com/bearsh/hid v1.3.0
+# github.com/bearsh/hid v1.3.0 => github.com/bdwyertech/hid v1.3.1-0.20210915214714-a7960f4cb384
 ## explicit; go 1.14
 github.com/bearsh/hid
 github.com/bearsh/hid/hidapi
@@ -23,3 +23,4 @@ github.com/sirupsen/logrus
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+# github.com/bearsh/hid => github.com/bdwyertech/hid v1.3.1-0.20210915214714-a7960f4cb384
