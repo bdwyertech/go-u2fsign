@@ -1,8 +1,11 @@
+// Encoding: UTF-8
+
 package main
 
 import (
 	"encoding/json"
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -11,7 +14,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var listFlag bool
+
 func init() {
+	flag.BoolVar(&listFlag, "list", false, "Return a list of devices")
+
 	if _, verbose := os.LookupEnv("U2F_VERBOSE"); verbose {
 		log.SetLevel(log.DebugLevel)
 	}
@@ -22,6 +29,24 @@ func init() {
 }
 
 func main() {
+	flag.Parse()
+
+	if versionFlag {
+		showVersion()
+		os.Exit(0)
+	}
+
+	u2fDevices := u2f.Devices()
+
+	if len(u2fDevices) == 0 {
+		log.Fatal("No U2F devices detected...")
+	}
+
+	if listFlag {
+		log.Infof("Detected %v U2F devices...", len(u2fDevices))
+		return
+	}
+
 	var authR u2f.AuthenticateRequest
 
 	err := json.NewDecoder(os.Stdin).Decode(&authR)
@@ -29,7 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	response, err := u2fAuth(&authR, u2f.Devices())
+	response, err := u2fAuth(&authR, u2fDevices)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,7 +63,6 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println(string(responseJson))
-
 }
 
 func u2fAuth(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) (response *u2f.AuthenticateResponse, err error) {
