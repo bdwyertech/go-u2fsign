@@ -24,7 +24,7 @@ builds:
       - -X main.GitCommit={{.ShortCommit}}
       - -X main.ReleaseVer={{.Version}}
       - -X main.ReleaseDate={{.Date}}
-  - id: darwin-amd64
+  - id: darwin
     main: .
     env:
       - CGO_ENABLED=1
@@ -35,6 +35,23 @@ builds:
     goarch:
       - amd64
       - arm64
+    flags:
+      - -mod=vendor
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.GitCommit={{.ShortCommit}}
+      - -X main.ReleaseVer={{.Version}}
+      - -X main.ReleaseDate={{.Date}}
+  - id: linux
+    main: .
+    env:
+      - CGO_ENABLED=1
+    goos:
+      - linux
+    goarch:
+      - amd64
+      # - arm64
     flags:
       - -mod=vendor
       - -trimpath
