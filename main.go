@@ -36,6 +36,11 @@ func main() {
 		os.Exit(0)
 	}
 
+	if pluginFlag {
+		RunAsPlugin()
+		return
+	}
+
 	u2fDevices := u2f.Devices()
 
 	if len(u2fDevices) == 0 {
