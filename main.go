@@ -84,7 +84,8 @@ func u2fAuth(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) (response *
 		}
 	}
 	if len(openDevices) == 0 {
-		log.Fatalf("Failed to find any devices")
+		err = errors.New("failed to open any U2F devices")
+		return
 	}
 	prompted := false
 	timeout := time.After(time.Second * 25)
@@ -104,7 +105,7 @@ func u2fAuth(req *u2f.AuthenticateRequest, devices []*u2f.HidDevice) (response *
 					log.Infoln("Touch the flashing U2F device to authenticate...")
 					prompted = true
 				} else {
-					log.Debugf("Got status response %s", err)
+					log.Debugf("U2F status response %s", err)
 				}
 			}
 		}
