@@ -2,8 +2,8 @@
 [![GoDoc][docimg]][docurl]
 [![AppVeyor][appveyorimg]][appveyorurl]
 
-[travisimg]:   https://travis-ci.org/bearsh/hid.svg?branch=master
-[travisurl]:   https://travis-ci.org/bearsh/hid
+[travisimg]:   https://app.travis-ci.com/bearsh/hid.svg?branch=master
+[travisurl]:   https://app.travis-ci.com/github/bearsh/hid
 [appveyorimg]: https://ci.appveyor.com/api/projects/status/8lngogiq0dhk78hh/branch/master?svg=true
 [appveyorurl]: https://ci.appveyor.com/project/bearsh/hid
 [docimg]:      https://pkg.go.dev/badge/github.com/bearsh/hid

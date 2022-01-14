@@ -19,7 +19,7 @@ package hid
 #cgo darwin CFLAGS: -DOS_DARWIN
 #cgo darwin LDFLAGS: -framework CoreFoundation -framework IOKit -framework AppKit
 #cgo windows CFLAGS: -DOS_WINDOWS
-#cgo windows LDFLAGS: -lsetupapi -lhid
+#cgo windows LDFLAGS: -lsetupapi
 
 #ifdef OS_LINUX
 	#ifdef HIDRAW
@@ -156,9 +156,9 @@ func (dev *Device) Close() error {
 //
 // Write will send the data on the first OUT endpoint, if one exists. If it does
 // not, it will send the data through the Control Endpoint (Endpoint 0).
-func (dev *Device) Write(report []byte) (int, error) {
+func (dev *Device) Write(b []byte) (int, error) {
 	// Abort if nothing to write
-	if len(report) == 0 {
+	if len(b) == 0 {
 		return 0, nil
 	}
 	// Abort if device closed in between
@@ -171,7 +171,7 @@ func (dev *Device) Write(report []byte) (int, error) {
 	}
 
 	// Execute the write operation
-	written := int(C.hid_write(device, (*C.uchar)(&report[0]), C.size_t(len(report))))
+	written := int(C.hid_write(device, (*C.uchar)(&b[0]), C.size_t(len(b))))
 	if written == -1 {
 		// If the write failed, verify if closed or other error
 		dev.lock.Lock()

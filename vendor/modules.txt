@@ -1,4 +1,4 @@
-# github.com/bearsh/hid v1.3.0 => github.com/bdwyertech/hid v1.3.1-0.20210915214714-a7960f4cb384
+# github.com/bearsh/hid v1.3.0 => github.com/bdwyertech/hid v1.4.1-0.20220114022835-6519f53488d8
 ## explicit; go 1.14
 github.com/bearsh/hid
 github.com/bearsh/hid/hidapi
@@ -18,9 +18,9 @@ github.com/marshallbrekka/go-u2fhost/hid
 # github.com/sirupsen/logrus v1.8.1
 ## explicit; go 1.13
 github.com/sirupsen/logrus
-# golang.org/x/sys v0.0.0-20210915083310-ed5796bab164
+# golang.org/x/sys v0.0.0-20220111092808-5a964db01320
 ## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# github.com/bearsh/hid => github.com/bdwyertech/hid v1.3.1-0.20210915214714-a7960f4cb384
+# github.com/bearsh/hid => github.com/bdwyertech/hid v1.4.1-0.20220114022835-6519f53488d8
